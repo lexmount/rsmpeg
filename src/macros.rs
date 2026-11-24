@@ -187,6 +187,7 @@ macro_rules! wrap_ref {
 }
 
 /// Wrapping with XXXMut, XXX -> XXX.
+#[cfg(not(all(feature = "bundled_h264", target_os = "macos")))]
 macro_rules! wrap_mut {
     (
         $(#[$meta:meta])*

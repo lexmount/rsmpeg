@@ -12,10 +12,14 @@ mod macros;
 mod shared;
 
 pub mod avcodec;
+// The macOS bundle generates bindings for the libraries in the source archive.
+#[cfg(not(all(feature = "bundled_h264", target_os = "macos")))]
 pub mod avdevice;
+#[cfg(not(all(feature = "bundled_h264", target_os = "macos")))]
 pub mod avfilter;
 pub mod avformat;
 pub mod avutil;
+#[cfg(not(all(feature = "bundled_h264", target_os = "macos")))]
 pub mod swresample;
 pub mod swscale;
 
