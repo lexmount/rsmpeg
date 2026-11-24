@@ -16,6 +16,10 @@ settable!(AVFrame {
     pict_type: ffi::AVPictureType,
     nb_samples: i32,
     format: i32,
+    color_range: ffi::AVColorRange,
+    colorspace: ffi::AVColorSpace,
+    color_primaries: ffi::AVColorPrimaries,
+    color_trc: ffi::AVColorTransferCharacteristic,
     ch_layout: ffi::AVChannelLayout,
     sample_rate: i32,
 });

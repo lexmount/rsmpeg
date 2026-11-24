@@ -14,7 +14,7 @@ exclude = ["/.github", "/tests", "/utils"]
 rust-version = "1.81.0"
 
 [dependencies]
-rusty_ffmpeg = "0.16.7"
+rusty_ffmpeg = { git = "https://github.com/lexmount/rusty_ffmpeg", rev = "3b3221af6cdf3fa58d54c4f3de0c578ed2f57ec2" }
 paste = "1.0"
 thiserror = "2.0"
 bon = "3"
@@ -36,6 +36,8 @@ ffmpeg7 = ["ffmpeg6", "rusty_ffmpeg/ffmpeg7"]
 # ffmpeg 7.1+
 ffmpeg7_1 = ["ffmpeg7"]
 ffmpeg8 = ["ffmpeg7_1", "rusty_ffmpeg/ffmpeg8"]
+ffmpeg8_1 = ["ffmpeg8", "rusty_ffmpeg/ffmpeg8_1"]
+bundled_h264 = ["ffmpeg8_1", "rusty_ffmpeg/bundled_h264"]
 
 # Try linking ffmpeg with pkg-config.
 link_system_ffmpeg = ["rusty_ffmpeg/link_system_ffmpeg"]

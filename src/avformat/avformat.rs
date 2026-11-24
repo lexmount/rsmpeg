@@ -67,6 +67,9 @@ impl AVFormatContextInput {
         options: Option<&mut Option<AVDictionary>>,
         /// Use provided IO context instead of implicit creation during `avformat_open_input`.
         mut io_context: Option<AVIOContextContainer>,
+        /// Read packets to fill in stream information beyond the container header.
+        #[builder(default = true)]
+        probe_stream_info: bool,
     ) -> Result<Self> {
         let mut input_format_context = {
             let input_format_context = unsafe { ffi::avformat_alloc_context() };
@@ -116,9 +119,11 @@ impl AVFormatContextInput {
         let mut context = unsafe { Self::from_raw(NonNull::new(input_format_context).unwrap()) };
         context.io_context = io_context;
 
-        unsafe { ffi::avformat_find_stream_info(context.as_mut_ptr(), ptr::null_mut()) }
-            .upgrade()
-            .map_err(RsmpegError::FindStreamInfoError)?;
+        if probe_stream_info {
+            unsafe { ffi::avformat_find_stream_info(context.as_mut_ptr(), ptr::null_mut()) }
+                .upgrade()
+                .map_err(RsmpegError::FindStreamInfoError)?;
+        }
 
         Ok(context)
     }

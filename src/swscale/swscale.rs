@@ -8,6 +8,26 @@ use std::ptr;
 wrap!(SwsContext: ffi::SwsContext);
 
 impl SwsContext {
+    /// Allocate a scaler that takes its configuration from the source and
+    /// destination frames passed to [`Self::convert_frame`].
+    #[cfg(feature = "ffmpeg8_1")]
+    pub fn for_frames() -> Option<Self> {
+        unsafe { ffi::sws_alloc_context() }
+            .upgrade()
+            .map(|context| unsafe { Self::from_raw(context) })
+    }
+
+    /// Scale and convert a frame using its format and color properties.
+    /// FFmpeg allocates the destination buffers when they are absent.
+    #[cfg(feature = "ffmpeg8_1")]
+    pub fn convert_frame(&mut self, source: &AVFrame, destination: &mut AVFrame) -> Result<()> {
+        unsafe {
+            ffi::sws_scale_frame(self.as_mut_ptr(), destination.as_mut_ptr(), source.as_ptr())
+        }
+        .upgrade()?;
+        Ok(())
+    }
+
     /// Allocate and return an [`SwsContext`]. You need it to perform
     /// scaling/conversion operations using [`Self::scale()`].
     ///
